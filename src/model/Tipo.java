@@ -2,5 +2,5 @@ package model;
 
 public enum Tipo {
 
-    TATUAGEM,PIERCING,ORCAMENTO
+    Piercing,Tatuagem,PRESTACAO_DE_SERVICO;
 }

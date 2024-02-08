@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ProdutoController {
-    private Map<Integer, Produto> listaProdutos = new HashMap<>();
+    public static Map<Integer, Produto> listaProdutos = new HashMap<>();
 
     public void adicionarProduto(Produto produto) {
         if (produto == null) {
@@ -87,13 +87,13 @@ public class ProdutoController {
 
         switch (scanTipo) {
             case 1:
-                tipoProduto = Tipo.PIERCING;
+                tipoProduto = Tipo.Piercing;
                 break;
             case 2:
-                tipoProduto = Tipo.TATUAGEM;
+                tipoProduto = Tipo.Tatuagem;
                 break;
             case 3:
-                tipoProduto = Tipo.ORCAMENTO;
+                tipoProduto = Tipo.PRESTACAO_DE_SERVICO;
                 break;
             default:
                 System.out.println("Valor inválido");
@@ -130,7 +130,5 @@ public class ProdutoController {
         adicionarProduto(novoProduto);
     }
 
-    public Map<Integer, Produto> getEstoque() {
-        return listaProdutos;
-    }
+    
 }
