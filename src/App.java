@@ -11,12 +11,12 @@ import model.Usuario;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Usuario usuario;
-        ProdutoController produtoController = new ProdutoController();
-        Carrinho carrinho = new Carrinho(produtoController);
-        ClienteController clienteController;
+         Usuario usuario = null;
+         ProdutoController produtoController = new ProdutoController();
+         Carrinho carrinho = new Carrinho(produtoController);
+         ClienteController clienteController;
 
-        Scanner sc = new Scanner(System.in);
+         Scanner sc = new Scanner(System.in);
         String nome;
         BigDecimal valorParaCompra;
         List<Cupom> listaCupons = new ArrayList<>();
@@ -44,6 +44,22 @@ public class App {
         valorParaCompra = sc.nextBigDecimal();
 
         usuario = new Usuario(nome, senhaUsuario, valorParaCompra, listaCupons, carrinho);
+
+        System.out.println("Dados cadastrados :");
+        System.out.println(usuario.toString());
+
+
+
+        // Rodando ate aqui 
+
+        System.out.println("Iniciado sistema de apresentação de prosutos ");
+        clienteController = new ClienteController(usuario);
+
+        System.out.println("Apresentando produtos ");
+        System.out.println(produtoController.getEstoque());
+
+
+
 
         sc.close();
     }

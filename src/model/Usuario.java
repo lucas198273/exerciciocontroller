@@ -54,6 +54,11 @@ public  class Usuario  {
     public void setCarrinho(Carrinho carrinho) {
         this.carrinho = carrinho;
     }
+    @Override
+    public String toString() {
+        return "Usuario " + nomeUsuario + "\n Senha Login " + senhaLogin + "\n Valor Para Compra "
+                + valorParaCompra + "        CuponsDesconto=" + cuponsDesconto + " \n Carrinho=" + carrinho.getItensNoCesto() ;
+    }
 
 
     

@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import model.Estoque;
 import controller.ProdutoController;
 
 public class Carrinho {
@@ -14,16 +14,15 @@ public class Carrinho {
     public List<Produto> getItensNoCesto() {
         return itensNoCesto;
     }
-
-    public Carrinho(ProdutoController produtoController) {
+        public Carrinho(ProdutoController produtoController) {
         this.produtoController = produtoController;
         this.itensNoCesto = new ArrayList<>();
-    }
 
+    }
     public void adicionarItemAoCesto(Produto produto) {
         if (produto != null) {
-            List <Produto> estoque = new ArrayList<>();
-            estoque = ProdutoController.listaProdutos;
+            List <Produto> estoque = produtoController.getEstoque();
+            
             if (estoque.contains(produto)) {
                 itensNoCesto.add(produto);
             } else {
