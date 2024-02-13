@@ -14,15 +14,40 @@ import model.Tipo;
 import model.Usuario;
 
 public class App {
-    public static void main(String[] args) throws Exception {
+    private static final int SENHA_MINIMA_CARACTERES = 8;
+    private static final int QUANTIDADE_PRODUTOS_PARA_ESTOQUE = 10;
+    public static void main(String[] args) {
         Usuario usuario = null;
         AdministradorController adm = new AdministradorController();
-        Estoque estoque ;
-     
+        Estoque estoque;
+        List<Produto> listaParaEstoque = criarListaProdutos();
 
+        adm.populandoEstoqueComLista(listaParaEstoque);
+        estoque = new Estoque(adm.getMap());
 
+        ProdutoController produtoController = new ProdutoController();
+        Carrinho carrinho = new Carrinho(produtoController);
+        ClienteController clienteController;
+
+        Scanner sc = new Scanner(System.in);
+
+        usuario = cadastrarUsuario(sc, carrinho,usuario);
+
+        System.out.println("Dados cadastrados:");
+        System.out.println(usuario);
+
+        System.out.println("Iniciado sistema de apresentação de produtos ");
+        clienteController = new ClienteController(usuario);
+
+        System.out.println("Apresentando produtos ");
+        System.out.println(produtoController.getEstoque());
+
+        sc.close();
+    }
+
+    private static List<Produto> criarListaProdutos() {
         List<Produto> listaParaEstoque = new ArrayList<>();
-
+        // Adicione os produtos à listaParaEstoque aqu
         Produto p1 = new Produto(1, "AGULHA 7RL", 5, Tipo.MATERIAL_DE_TRABALHO, 100);
         Produto p2 = new Produto(2, "TINTA PRETA 30ml", 20, Tipo.MATERIAL_DE_TRABALHO, 50);
         Produto p3 = new Produto(3, "CONSULTA DE TATUAGEM", 50, Tipo.PRESTACAO_DE_SERVICO, 0);
@@ -33,7 +58,6 @@ public class App {
         Produto p8 = new Produto(8, "TINTA COLORIDA 30ml", 25, Tipo.MATERIAL_DE_TRABALHO, 40);
         Produto p9 = new Produto(9, "SESSÃO DE RETOQUE", 30, Tipo.PRESTACAO_DE_SERVICO, 0);
         Produto p10 = new Produto(10, "PIERCING DE NARIZ", 8, Tipo.PIERCING, 150);
-
         listaParaEstoque.add(p1);
         listaParaEstoque.add(p2);
         listaParaEstoque.add(p3);
@@ -45,67 +69,45 @@ public class App {
         listaParaEstoque.add(p9);
         listaParaEstoque.add(p10);
 
-        adm.populandoEstoqueComLista(listaParaEstoque);
-        estoque = new Estoque(adm.getMap());
-        
 
+        return listaParaEstoque;
+    }
 
-        
+    private static Usuario cadastrarUsuario(Scanner sc, Carrinho carrinho,Usuario usuario) {
+        String nome = obterEntradaString(sc, "Insira seu nome de usuário");
 
+        String senhaUsuario = obterSenha(sc);
 
+        BigDecimal valorParaCompra = obterEntradaBigDecimal(sc, "Insira seu valor disponível para compra");
 
-
-
-         
-         ProdutoController produtoController = new ProdutoController();
-         Carrinho carrinho = new Carrinho(produtoController);
-         ClienteController clienteController;
-
-         Scanner sc = new Scanner(System.in);
-        String nome;
-        BigDecimal valorParaCompra;
         List<Cupom> listaCupons = new ArrayList<>();
-
-        System.out.println("Bem vindo ao sistema de compra e venda ");
-        System.out.println("Agora iremos fazer seu cadastro");
-
-        System.out.println("\nInsira seu nome de usuário");
-        nome = sc.nextLine();
-
-        boolean senhaOk = false;
-        String senhaUsuario = null;
-        while (!senhaOk) {
-            System.out.println("Insira sua senha com pelo menos 8 digitos");
-            String senhaString = sc.nextLine();
-            if (senhaString.length() >= 8) {
-                senhaUsuario = senhaString;
-                senhaOk = true;
-            } else {
-                System.out.println("A senha deve ter pelo menos 8 caracteres.");
-            }
-        }
-
-        System.out.println("Insira seu valor disponível para compra ");
-        valorParaCompra = sc.nextBigDecimal();
 
         usuario = new Usuario(nome, senhaUsuario, valorParaCompra, listaCupons, carrinho);
 
-        System.out.println("Dados cadastrados :");
-        System.out.println(usuario.toString());
+        System.out.println("Dados cadastrados:");
+        System.out.println(usuario);
+        return usuario;
+    }
 
+    private static String obterSenha(Scanner sc) {
+        String senhaUsuario = null;
+        while (senhaUsuario == null || senhaUsuario.length() < SENHA_MINIMA_CARACTERES) {
+            System.out.println("Insira sua senha com pelo menos 8 digitos");
+            senhaUsuario = sc.nextLine();
+            if (senhaUsuario.length() < SENHA_MINIMA_CARACTERES) {
+                System.out.println("A senha deve ter pelo menos 8 caracteres.");
+            }
+        }
+        return senhaUsuario;
+    }
 
+    private static String obterEntradaString(Scanner sc, String mensagem) {
+        System.out.println(mensagem);
+        return sc.nextLine();
+    }
 
-        // Rodando ate aqui 
-
-        System.out.println("Iniciado sistema de apresentação de prosutos ");
-        clienteController = new ClienteController(usuario);
-
-        System.out.println("Apresentando produtos ");
-        System.out.println(produtoController.getEstoque());
-
-
-
-
-        sc.close();
+    private static BigDecimal obterEntradaBigDecimal(Scanner sc, String mensagem) {
+        System.out.println(mensagem);
+        return sc.nextBigDecimal();
     }
 }
