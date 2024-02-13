@@ -17,13 +17,54 @@ import model.Estoque;
 import model.Produto;
 import model.Tipo;
 
+import java.util.List;
+
 public class AdministradorController {
 
     AdministradorSistema adm;
     Estoque estoque = new Estoque();
+    ProdutoController controller = new ProdutoController();
+
+    public void populandoEstoqueComLista(List<Produto> listaDeProdutos) {
+        List<Produto> lista = listaDeProdutos;
+        
+        try {
+            if (!lista.isEmpty()) {
+                for (int i = 0; i < lista.size(); i++) {
+                    Produto produto = lista.get(i);
+                    controller.estoqueObj.adicionarProduto(produto);;
+                }
+
+                System.out.println("Produtos adicionados ao estoque com sucesso");
+
+                for (Produto produto : lista) {
+                    System.out.println(produto.toString());
+                }
+                System.out.println("\n Estoque populado");
+            } else {
+                System.out.println("A lista de produtos está vazia.");
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Erro ao acessar a lista: índice fora dos limites.");
+           
+        } catch (Exception e) {
+            System.out.println("Ocorreu um erro inesperado: " + e.getMessage());
+     
+        }
+    }
+    public Map<Integer, Produto> getMap(){
+        return estoque.getEstoqueMap();
+    }
+
+
     public AdministradorController(AdministradorSistema adm) {
         this.adm = adm;
     }
+    public AdministradorController() {
+        //TODO Auto-generated constructor stub
+    }
+
+
     public void adicionarProdutoEstoque(Produto produto) {
         if (produto == null) {
             System.out.println("Produto é nulo");
@@ -86,20 +127,25 @@ public class AdministradorController {
         String nomeProduto = sc.nextLine();
 
         System.out.println("Informe o tipo do produto ");
-        System.out.println("1 para Piercing\n2 para Tatuagem\n3 para Orcamento");
+        System.out.println("1 para PIERCING\n2 para TATUAGEM\n3 para MATERIAL_DE_TRABALHO, \n4 PRESTACAO DE SERVICO \n5  PRODUTO ESPECIFICO");
         int scanTipo = sc.nextInt();
         Tipo tipoProduto = null;
 
         switch (scanTipo) {
             case 1:
-                tipoProduto = Tipo.Piercing;
+                tipoProduto = Tipo.PIERCING;
                 break;
             case 2:
-                tipoProduto = Tipo.Tatuagem;
+                tipoProduto = Tipo.TATUAGEM;
                 break;
             case 3:
                 tipoProduto = Tipo.PRESTACAO_DE_SERVICO;
                 break;
+            case 4: 
+                tipoProduto = Tipo.PRESTACAO_DE_SERVICO;
+                break;
+            case 5 :
+            tipoProduto = Tipo.PRODUTO_ESPECIFICO; 
             default:
                 System.out.println("Valor inválido");
                 return;
@@ -136,7 +182,7 @@ public class AdministradorController {
     }
     // Dentro da classe ProdutoController
 
-    public List<Produto> getEstoque() {
+    public List<Produto> getEstoqueList() {
         return new ArrayList<>(estoque.getEstoqueList());
     }
 
