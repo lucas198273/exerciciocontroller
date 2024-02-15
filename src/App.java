@@ -23,7 +23,7 @@ public class App {
         List<Produto> listaParaEstoque = criarListaProdutos();
 
         adm.populandoEstoqueComLista(listaParaEstoque);
-        estoque = new Estoque(adm.getMap());
+        
 
         ProdutoController produtoController = new ProdutoController();
         Carrinho carrinho = new Carrinho(produtoController);
@@ -40,7 +40,7 @@ public class App {
         clienteController = new ClienteController(usuario);
 
         System.out.println("Apresentando produtos ");
-        System.out.println(produtoController.getEstoque());
+        System.out.println(adm.getMap());
 
         sc.close();
     }
@@ -75,15 +75,10 @@ public class App {
 
     private static Usuario cadastrarUsuario(Scanner sc, Carrinho carrinho,Usuario usuario) {
         String nome = obterEntradaString(sc, "Insira seu nome de usuário");
-
         String senhaUsuario = obterSenha(sc);
-
         BigDecimal valorParaCompra = obterEntradaBigDecimal(sc, "Insira seu valor disponível para compra");
-
         List<Cupom> listaCupons = new ArrayList<>();
-
         usuario = new Usuario(nome, senhaUsuario, valorParaCompra, listaCupons, carrinho);
-
         System.out.println("Dados cadastrados:");
         System.out.println(usuario);
         return usuario;
@@ -100,12 +95,10 @@ public class App {
         }
         return senhaUsuario;
     }
-
     private static String obterEntradaString(Scanner sc, String mensagem) {
         System.out.println(mensagem);
         return sc.nextLine();
     }
-
     private static BigDecimal obterEntradaBigDecimal(Scanner sc, String mensagem) {
         System.out.println(mensagem);
         return sc.nextBigDecimal();
